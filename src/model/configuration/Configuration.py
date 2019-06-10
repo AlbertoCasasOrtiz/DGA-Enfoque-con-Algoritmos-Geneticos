@@ -24,6 +24,12 @@ class Configuration:
     mutation = None
     selection_survivors = None
     type_individual = None
+    save_images = False
+    write_kernel_measure = False
+    show_images = False
+    show_graphic = False
+    save_graphic = False
+    path_results = ""
 
     @staticmethod
     def load_configuration():
@@ -78,3 +84,15 @@ class Configuration:
             Configuration.elitism = ConfigParser.parse_bool(value)
         elif key == "num_elitism":
             Configuration.num_elitism = int(value)
+        elif key == "save_images":
+            Configuration.save_images = ConfigParser.parse_bool(value)
+        elif key == "write_kernel_measure":
+            Configuration.write_kernel_measure = ConfigParser.parse_bool(value)
+        elif key == "show_images":
+            Configuration.show_images = ConfigParser.parse_bool(value)
+        elif key == "show_graphic":
+            Configuration.show_graphic = ConfigParser.parse_bool(value)
+        elif key == "save_graphic":
+            Configuration.save_graphic = ConfigParser.parse_bool(value)
+        elif key == "path_results":
+            Configuration.path_results = value

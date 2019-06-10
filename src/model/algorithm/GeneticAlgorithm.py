@@ -1,3 +1,5 @@
+import os
+
 import cv2
 import numpy as np
 
@@ -55,10 +57,11 @@ class GeneticAlgorithm:
             self.elite.clear()
             self.current_generation += 1
             # Mostrar progreso.
-            print(str(self.current_generation) + "\\" + str(Configuration.total_generations))
+            print(".", end='')
             self.best_fitness_array.append(self.population.best_individual.fitness)
             self.worst_fitness_array.append(self.population.worst_individual.fitness)
             self.average_fitness_array.append(self.population.average_fitness)
+        print("")
         self.show_results(self.population.best_individual.genotype)
 
     def iteration_interactive(self, indexes):
@@ -111,28 +114,54 @@ class GeneticAlgorithm:
         applied_kernel = cv2.filter2D(ProblemDeblurrImage.image, -1, kernel)
         mean = cv2.addWeighted(ProblemDeblurrImage.image, 0.5, applied_kernel, 0.5, 0)
 
+        # Si no existe, creamos directorio de resultados.
+        try:
+            os.mkdir(Configuration.path_results)
+        except FileExistsError:
+            print("Carpeta", Configuration.path_results, "ya existe")
+
         # Guardamos imagen kernelizada, media y kernel en disco.
-        cv2.imwrite('kernelized.jpg', applied_kernel, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
-        cv2.imwrite('mean.jpg', mean, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
-        cv2.imwrite('kernel.jpg', kernel, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+        if Configuration.save_images:
+            try:
+                os.mkdir(Configuration.path_results + "images/")
+            except FileExistsError:
+                print("Carpeta", Configuration.path_results + "images/", "ya existe")
+            cv2.imwrite(Configuration.path_results + 'images/kernelized-image.jpg', applied_kernel, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+            cv2.imwrite(Configuration.path_results + 'images/mean-image.jpg', mean, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+            cv2.imwrite(Configuration.path_results + 'images/original-image.jpg', ProblemDeblurrImage.image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+            cv2.imwrite(Configuration.path_results + 'images/kernel.jpg', kernel, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
-        # Mostramos kernel y mejor fitness en consola.
-        print(kernel)
-        print(MeasureBlurr.measure(applied_kernel))
+        # Escribimos kernel y medidas en fichero.
+        if Configuration.write_kernel_measure:
+            f = open(Configuration.path_results + "results.txt", "w+")
+            f.write("Kernel:\n")
+            f.write(str(kernel)+"\n")
+            f.write("\n")
+            f.write("Measure original:\n")
+            f.write(str(MeasureBlurr.measure(ProblemDeblurrImage.image))+"\n")
+            f.write("Measure mean:\n")
+            f.write(str(MeasureBlurr.measure(mean))+"\n")
+            f.write("Measure kernelized:\n")
+            f.write(str(MeasureBlurr.measure(applied_kernel))+"\n")
+            f.close()
 
-        # Mostramos gráfica de evolución del mejor fitness.
+        # Mostramos gráfica de evolución del mejor fitness y guardamos en disco.
         plt.plot(self.best_fitness_array, label='Best Fitness')
         plt.plot(self.worst_fitness_array, label='Worst Fitness')
         plt.plot(self.average_fitness_array, label='Average Fitness')
         plt.ylabel('sharpness')
         plt.xlabel('generations')
         plt.legend()
-        plt.show()
+        if Configuration.show_graphic:
+            plt.show()
+        if Configuration.save_graphic:
+            plt.savefig(Configuration.path_results + 'graphic.png')
+        plt.cla()
 
         # Mostramos imágenes al usuario.
-        cv2.imshow("kernelized", applied_kernel)
-        cv2.imshow("original", Configuration.problem.image)
-        cv2.imshow("mean", mean)
-
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        if Configuration.show_images:
+            cv2.imshow("kernelized", applied_kernel)
+            cv2.imshow("original", Configuration.problem.image)
+            cv2.imshow("mean", mean)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()

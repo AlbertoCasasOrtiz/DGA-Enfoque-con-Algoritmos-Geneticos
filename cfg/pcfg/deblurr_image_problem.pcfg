@@ -7,6 +7,6 @@ dim_y: 3
 min_val: -3
 max_val: 3
 # Path de la imagen que vamos a enfocar.
-image_path: images/torre-blurr.jpg
+image_path: images/blur-images/torre-blurr.jpg
 # Función que medirá el desenfoque [Variance of Laplacian, Modified Laplacian, Tenengrad].
 measure_function: Variance of Laplacian
