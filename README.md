@@ -4,6 +4,12 @@ En este repositorio se presenta una aproximación al problema de enfocar una ima
 
 Este código ha sido desarrollado y probado en PyCharm 2018.3 con Python 3.7. Mostramos a continuación los pasos que hay que seguir para ejecutar el código en PyCharm:
 
+## Configuración
+
+La configuración del algoritmo se hace a través del archivo de configuración `cfg/config.cfg`, en el cual vienen descritas las diferentes opciones que tenemos y los valores que pueden tomar.
+
+La configuración específica del problema, incluyento la imagen que vamos a procesar, se hace a través del archivo de configuración `cfg/pcfg/deblurr_image_problem.cfg`, en el cual de nuevo vienen descritas las opciones que aparecen y sus valores.
+
 ## Ejecución del algoritmo genético
 
 1. Importar proyecto en PyCharm.
