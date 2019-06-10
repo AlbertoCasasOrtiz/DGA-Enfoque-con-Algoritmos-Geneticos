@@ -28,7 +28,7 @@ class Configuration:
     @staticmethod
     def load_configuration():
         """
-        Vargar configuración desde el archivo de configuración.
+        Cargar configuración desde el archivo de configuración.
         :return: None
         """
         file = open(Configuration.path_config, "r")
