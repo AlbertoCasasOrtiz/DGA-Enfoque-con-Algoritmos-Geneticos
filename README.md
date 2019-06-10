@@ -1,4 +1,4 @@
-# Enfoque con algoritmos genéticos
+# Enfoque de imágenes con algoritmos genéticos
 
 En este repositorio se presenta una aproximación al problema de enfocar una imagen utilizando para ello algoritmos genéticos y evolución interactiva.
 
