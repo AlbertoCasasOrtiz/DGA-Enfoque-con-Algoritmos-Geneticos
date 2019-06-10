@@ -1,9 +1,0 @@
-num_decimals: 3
-dim_x: 3
-dim_y: 3
-min_val: -10
-max_val: 10
-image_path: images/gopro.png
-image_path_ground: torre.jpg
-ground_truth: False
-measure_function: Tenengrad

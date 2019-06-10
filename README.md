@@ -43,3 +43,13 @@ La configuración específica del problema, incluyento la imagen que vamos a pro
     <img align="center" src="images/readme-images/Proceso de Selección.PNG">
 
 8. Las imágenes generadas se guardarán en la raiz del proyecto junto al kernel que las ha generado.
+
+## Resultados
+
+Mostramos a continuación algunos de los resultados obtenidos sobre las imágenes `images/blur-images/gopro.png` y `images/blur-images/torre-blurr.jpg`.
+
+    <img align="center" src="results/gopro-result.png">
+
+    <img align="center" src="results/torre-blur-result.jpg">
+
+    
