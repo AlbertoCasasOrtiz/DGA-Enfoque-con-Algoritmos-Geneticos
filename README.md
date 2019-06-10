@@ -47,7 +47,9 @@ La configuración específica del problema, incluyento la imagen que vamos a pro
 ## Resultados
 
 Mostramos a continuación algunos de los resultados obtenidos sobre las imágenes `images/blur-images/gopro.png` y `images/blur-images/torre-blurr.jpg`.
-    <img align="center" src="results/gopro-result.png">
-    <img align="center" src="results/torre-blur-result.jpg">
+
+<img align="center" src="results/gopro-result.png">
+    
+<img align="center" src="results/torre-blur-result.jpg">
 
     
