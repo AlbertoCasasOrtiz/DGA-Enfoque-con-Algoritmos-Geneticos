@@ -10,11 +10,11 @@ from skimage.measure import compare_ssim as ssim
 logging.basicConfig(format='%(asctime)s.%(msecs)03d  %(message)s', datefmt='%d/%m/%Y %H:%M:%S', level=logging.INFO)
 logger = logging.getLogger('blur_detector')
 
-SCRIPT_DIR		 = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-ORIGINAL_SHARP	 = os.path.join(SCRIPT_DIR, 'Original_sharp')
-ORIGINAL_BLURRED = os.path.join(SCRIPT_DIR, 'Original_blurred')
-CNN_IMAGES		 = os.path.join(SCRIPT_DIR, 'CNN')
-RNN_IMAGES		 = os.path.join(SCRIPT_DIR, 'RNN')
+SCRIPT_DIR   = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+ORIG_SHARP   = os.path.join(SCRIPT_DIR, 'Original_sharp')
+ORIG_BLURRED = os.path.join(SCRIPT_DIR, 'Original_blurred')
+CNN_IMAGES   = os.path.join(SCRIPT_DIR, 'CNN')
+RNN_IMAGES   = os.path.join(SCRIPT_DIR, 'RNN')
 
 
 def laplacian(image_path):
@@ -37,8 +37,8 @@ def get_similarities(images_path):
 	logger.info('Getting similarities from {0}'.format(images_path))
 	similarities = []
 
-	for o_img, g_img in zip(sorted(os.listdir(ORIGINAL_SHARP)), sorted(os.listdir(images_path))):
-		original  = cv2.imread(os.path.join(ORIGINAL_SHARP, o_img))
+	for o_img, g_img in zip(sorted(os.listdir(ORIG_SHARP)), sorted(os.listdir(images_path))):
+		original  = cv2.imread(os.path.join(ORIG_SHARP, o_img))
 		generated = cv2.imread(os.path.join(images_path, g_img))
 		similarities.append(ssim(original, generated, data_range=(generated.max() - generated.min()), multichannel=True))
 
@@ -47,32 +47,30 @@ def get_similarities(images_path):
 
 logger.info('Running from {0}'.format(SCRIPT_DIR))
 
-original_sharp_scores   = get_score_list(ORIGINAL_SHARP)
-original_blurred_scores = get_score_list(ORIGINAL_BLURRED)
-cnn_scores 				= get_score_list(CNN_IMAGES)
-rnn_scores 				= get_score_list(RNN_IMAGES)
-
-cnn_similarities		= get_similarities(CNN_IMAGES)
-rnn_similarities		= get_similarities(RNN_IMAGES)
-
-filenames 				= ['{0}.png'.format(i) for i in range(1,101)]
+orig_sharp_scores   = get_score_list(ORIG_SHARP)
+orig_blurred_scores = get_score_list(ORIG_BLURRED)
+cnn_scores          = get_score_list(CNN_IMAGES)
+rnn_scores          = get_score_list(RNN_IMAGES)
+cnn_similarities    = get_similarities(CNN_IMAGES)
+rnn_similarities    = get_similarities(RNN_IMAGES)
+filenames           = ['{0}.png'.format(i) for i in range(1,101)]
 
 cnn_dict = {
-		'File': 		filenames,
+		'File':         filenames,
 		'Architecture': 'CNN',
-		'LS Sharp': 	original_sharp_scores,
-		'LS Blurred': 	original_blurred_scores,
+		'LS Sharp':     orig_sharp_scores,
+		'LS Blurred':   orig_blurred_scores,
 		'LS Generated': cnn_scores,
-		'SE': 			cnn_similarities
+		'SE':           cnn_similarities
 }
 
 rnn_dict = {
-		'File': 		filenames,
+		'File':         filenames,
 		'Architecture': 'RNN',
-		'LS Sharp': 	original_sharp_scores,
-		'LS Blurred': 	original_blurred_scores,
+		'LS Sharp':     orig_sharp_scores,
+		'LS Blurred':   orig_blurred_scores,
 		'LS Generated': rnn_scores,
-		'SE': 			rnn_similarities
+		'SE':           rnn_similarities
 }
 
 cnn_df = pd.DataFrame(cnn_dict)
